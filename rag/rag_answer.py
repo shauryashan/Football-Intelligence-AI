@@ -1,5 +1,6 @@
 from pathlib import Path
 import re
+import os
 import faiss
 import json
 from sentence_transformers import SentenceTransformer
@@ -52,13 +53,28 @@ embedding_model = SentenceTransformer(EMBEDDING_MODEL)
 
 
 # ============================================================
-# OPENAI / OLLAMA CLIENT
+# LLM CLIENT
 # ============================================================
 
-client = OpenAI(
-    base_url="http://localhost:11434/v1",
-    api_key="ollama"
-)
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+
+if OPENROUTER_API_KEY:
+
+    client = OpenAI(
+        base_url="https://openrouter.ai/api/v1",
+        api_key=OPENROUTER_API_KEY,
+    )
+
+    LLM_MODEL = "openrouter/free"
+
+else:
+
+    client = OpenAI(
+        base_url="http://localhost:11434/v1",
+        api_key="ollama",
+    )
+
+    LLM_MODEL = "qwen3:8b"
 
 
 # ============================================================
@@ -508,13 +524,21 @@ If the documentation does not specify an exact formula or another
 requested detail, explicitly say that it does not specify it.
 """
 
-    response = client.responses.create(
-        model=LLM_MODEL,
-        instructions=system_prompt,
-        input=user_prompt
-    )
+    response = client.chat.completions.create(
+    model=LLM_MODEL,
+    messages=[
+        {
+            "role": "system",
+            "content": system_prompt
+        },
+        {
+            "role": "user",
+            "content": user_prompt
+        }
+    ]
+)
 
-    return response.output_text, results
+    return response.choices[0].message.content, results
 
 
 # ============================================================
