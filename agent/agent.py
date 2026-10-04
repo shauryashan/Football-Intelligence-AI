@@ -1221,7 +1221,7 @@ Use exact returned values.
 If a tool returned an error, explain the result
 briefly rather than inventing data.
 """,
-            input=tool_outputs,
+            input=response.output + tool_outputs,
             tools=TOOLS,
         )
 
