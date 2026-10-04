@@ -3469,10 +3469,12 @@ elif page == "AI Analyst":
                         f"AI Analyst unavailable: {type(error).__name__}: {error}"
                     )
 
-                    with st.expander("Technical error details"):
-                        st.code(
-                            traceback.format_exc()
-                        )
+                    st.write("Error repr:", repr(error))
+                    st.write("Underlying cause:", repr(error.__cause__))
+                    st.write("Underlying context:", repr(error.__context__))
+
+                    with st.expander("Full traceback"):
+                        st.code(traceback.format_exc())
 
 
     # --------------------------------------------------------
