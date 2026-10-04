@@ -25,6 +25,7 @@ openai==3.13.0
 # HTTP
 requests==2.34.2
 httpx==0.28.1
+httpx2
 
 # Visualization / Images
 matplotlib==3.11.1

@@ -1,7 +1,12 @@
 import json
 import re
+import sys
+import openai
+print("Python:", sys.version)
+print("OpenAI:", openai.__version__)
 
-from openai import OpenAI
+from openai import OpenAI, DefaultHttpxClient
+import httpx2
 
 from agent.tools.sql_tool import run_sql
 from agent.tools.player_similarity_tool import find_similar_players_for_agent
@@ -26,18 +31,22 @@ from agent.tools.tool_registry import (
 
 import os
 
-if os.getenv("OPENROUTER_API_KEY"):
-    client = OpenAI(
-        base_url="https://openrouter.ai/api/v1",
-        api_key=os.getenv("OPENROUTER_API_KEY"),
-    )
-    MODEL = "openrouter/free"
-else:
-    client = OpenAI(
-        base_url="http://localhost:11434/v1",
-        api_key="ollama",
-    )
-    MODEL = "qwen3:8b"
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+
+if not OPENROUTER_API_KEY:
+    raise RuntimeError("OPENROUTER_API_KEY is not configured")
+
+client = OpenAI(
+    base_url="https://openrouter.ai/api/v1",
+    api_key=os.getenv("OPENROUTER_API_KEY"),
+    http_client=DefaultHttpxClient(
+        transport=httpx2.HTTPTransport(
+            local_address="0.0.0.0"
+        )
+    ),
+)
+
+MODEL = "openrouter/free"
 MAX_TOOL_ROUNDS = 8
 
 
