@@ -1221,7 +1221,6 @@ Use exact returned values.
 If a tool returned an error, explain the result
 briefly rather than inventing data.
 """,
-            previous_response_id=response.id,
             input=tool_outputs,
             tools=TOOLS,
         )
