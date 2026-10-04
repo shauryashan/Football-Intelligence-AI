@@ -3463,9 +3463,16 @@ elif page == "AI Analyst":
 
                 except Exception as error:
 
+                    import traceback
+
                     st.error(
-                        f"AI Analyst unavailable: {error}"
+                        f"AI Analyst unavailable: {type(error).__name__}: {error}"
                     )
+
+                    with st.expander("Technical error details"):
+                        st.code(
+                            traceback.format_exc()
+                        )
 
 
     # --------------------------------------------------------
