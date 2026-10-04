@@ -1,0 +1,35 @@
+streamlit==1.63.0
+
+# Data
+numpy==2.5.3
+pandas==3.0.5
+scipy==1.18.1
+
+# Machine Learning
+scikit-learn==1.9.1
+joblib==1.6.0
+
+# Deep Learning / NLP
+torch==2.14.0
+transformers==5.17.0
+sentence-transformers==6.0.1
+tokenizers==0.23.2
+safetensors==0.8.0
+
+# Vector Search / RAG
+faiss-cpu==1.15.0
+
+# LLM / Agent
+openai==3.13.0
+
+# HTTP
+requests==2.34.2
+httpx==0.28.1
+
+# Visualization / Images
+matplotlib==3.11.1
+pillow==12.3.0
+
+# Utilities
+PyYAML==6.0.3
+tqdm==4.70.1

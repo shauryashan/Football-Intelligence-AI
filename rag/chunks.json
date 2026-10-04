@@ -1,0 +1,1059 @@
+[
+  {
+    "chunk_id": 0,
+    "source": "dataset_overview.md",
+    "section": "1. Project",
+    "chunk_number": 0,
+    "text": "1. Project\n\nFootball Intelligence AI is an end-to-end football analytics, scouting, machine learning, NLP, RAG, and agentic AI platform.\n\nThe project currently uses StatsBomb Open Data as its football event and match-data source.\n\nThe raw StatsBomb data is kept separate from the processed project datasets.\n\n---"
+  },
+  {
+    "chunk_id": 1,
+    "source": "dataset_overview.md",
+    "section": "2. Current Dataset Scope",
+    "chunk_number": 1,
+    "text": "2. Current Dataset Scope\n\nThe current validated development dataset is:\n\n- Competition: Premier League\n- Season: 2015/16\n- StatsBomb competition ID: 2\n- StatsBomb season ID: 27\n- Matches: 380\n- Teams: 20\n- Players: 644\n- Player-match records: 13,678\n- Event records: 1,313,773\n\nThe current database therefore represents one competition-season rather than the entire StatsBomb Open Data collection.\n\nAn initial survey identified 80 competition-season datasets across 24 competitions in the available raw data.\n\nThe other 79 competition-season datasets are not currently loaded into the project database. They are reserved for future expansion after the current analytics, machine learning, and AI pipeline has been validated.\n\nNo live or current football data is currently integrated into the platform.\n\n---"
+  },
+  {
+    "chunk_id": 2,
+    "source": "dataset_overview.md",
+    "section": "3. Raw Data",
+    "chunk_number": 2,
+    "text": "3. Raw Data\n\nThe raw StatsBomb dataset is stored in:\n\n`open-data-master/`\n\nThe raw data includes match, lineup, event, and other StatsBomb Open Data resources.\n\nRaw files are treated as immutable source data.\n\nProcessed datasets are generated through the project's ETL pipeline rather than modifying the raw files.\n\n---"
+  },
+  {
+    "chunk_id": 3,
+    "source": "dataset_overview.md",
+    "section": "4. Processed Relational Data",
+    "chunk_number": 3,
+    "text": "4. Processed Relational Data\n\nThe project converts the selected competition-season into five relational tables."
+  },
+  {
+    "chunk_id": 4,
+    "source": "dataset_overview.md",
+    "section": "Matches",
+    "chunk_number": 4,
+    "text": "Matches\n\nOne row represents one match.\n\nKey information includes:\n\n- match ID\n- match date\n- kick-off time\n- season\n- home team ID\n- away team ID\n- home score\n- away score\n- match week\n- competition stage\n- stadium\n- referee\n- match result\n\nThe final dataset contains 380 matches."
+  },
+  {
+    "chunk_id": 5,
+    "source": "dataset_overview.md",
+    "section": "Teams",
+    "chunk_number": 5,
+    "text": "Teams\n\nOne row represents one team.\n\nColumns:\n\n- team ID\n- team name\n\nThe dataset contains 20 unique teams."
+  },
+  {
+    "chunk_id": 6,
+    "source": "dataset_overview.md",
+    "section": "Players",
+    "chunk_number": 6,
+    "text": "Players\n\nOne row represents one player.\n\nColumns:\n\n- player ID\n- player name\n- player nickname\n- country\n\nThe dataset contains 644 unique players.\n\nSome players do not have a nickname in the source data. This is treated as valid source optionality rather than an ETL failure."
+  },
+  {
+    "chunk_id": 7,
+    "source": "dataset_overview.md",
+    "section": "Player Match",
+    "chunk_number": 7,
+    "text": "Player Match\n\nOne row represents one player participating in one match record.\n\nColumns include:\n\n- match ID\n- player ID\n- team ID\n- jersey number\n- position ID\n- position\n- start reason\n- end reason\n- from time\n- to time\n- minutes played\n\nThe table contains 13,678 player-match records.\n\nThe composite key is:\n\n`(match_id, player_id)`"
+  },
+  {
+    "chunk_id": 8,
+    "source": "dataset_overview.md",
+    "section": "Events",
+    "chunk_number": 8,
+    "text": "Events\n\nOne row represents one football event.\n\nThe final event table contains 1,313,773 events.\n\nEvent information includes:\n\n- event type\n- match\n- team\n- player\n- period\n- timestamp\n- pitch location\n- possession\n- pressure information\n- passing information\n- shot information\n- carrying information\n- duel information\n- dribbling information\n- interception information\n- clearance information\n\nImportant event-derived metrics include shots, expected goals (xG), passes, pressures, carries, duels, interceptions, clearances, dribbles, and other event types available in the source data.\n\n---"
+  },
+  {
+    "chunk_id": 9,
+    "source": "dataset_overview.md",
+    "section": "5. Data Quality and Validation",
+    "chunk_number": 9,
+    "text": "5. Data Quality and Validation\n\nThe processed datasets were validated before being loaded into the database.\n\nKey validation results include:\n\n- Duplicate match IDs: 0\n- Duplicate player IDs: 0\n- Duplicate team IDs: 0\n- Duplicate player-match keys: 0\n- Duplicate event IDs: 0\n- Foreign-key violations: 0\n- Invalid match scores: 0\n- Invalid event timestamps: 0\n- Invalid event xG values: 0\n- Negative player minutes: 0\n- Missing key relational identifiers: 0\n\nAll 380 matches have a detected final match-clock time from the event data.\n\nPlayer minutes are calculated using lineup timing and the match-specific final match-clock time when required.\n\n---"
+  },
+  {
+    "chunk_id": 10,
+    "source": "dataset_overview.md",
+    "section": "6. Match Results",
+    "chunk_number": 10,
+    "text": "6. Match Results\n\nThe 380 matches contain:\n\n- Home wins: 157\n- Draws: 107\n- Away wins: 116\n\nThese values are used by the match-outcome machine learning pipeline.\n\n---"
+  },
+  {
+    "chunk_id": 11,
+    "source": "dataset_overview.md",
+    "section": "7. Scouting Population",
+    "chunk_number": 11,
+    "text": "7. Scouting Population\n\nFor player scouting and several machine-learning tasks, the project uses a minimum exposure threshold of 900 minutes.\n\nThis produces a scouting population of:\n\n- 316 players\n\nThis threshold reduces the influence of extremely small playing-time samples when constructing player profiles and per-90 statistics.\n\n---"
+  },
+  {
+    "chunk_id": 12,
+    "source": "dataset_overview.md",
+    "section": "8. Football Analytics",
+    "chunk_number": 12,
+    "text": "8. Football Analytics\n\nThe project derives analytical metrics from the event and player-match data.\n\nExamples include:\n\n- goals\n- expected goals\n- shots\n- key passes\n- event-derived assists\n- passes\n- pressure activity\n- tackles\n- interceptions\n- clearances\n- carries\n- dribbles\n- duels\n- ball recoveries\n- miscontrols\n- dispossessions\n\nMany metrics are normalized per 90 minutes for player comparison.\n\nThe project's per-90 calculations use the validated elapsed StatsBomb match-clock minutes, including stoppage time.\n\nThis is a project methodology choice and should not be interpreted as a universal official definition of per-90 playing time.\n\n---"
+  },
+  {
+    "chunk_id": 13,
+    "source": "dataset_overview.md",
+    "section": "9. Important Metric Limitations",
+    "chunk_number": 13,
+    "text": "9. Important Metric Limitations\n\nSome analytical metrics are project-defined rather than official league statistics.\n\nFor example:\n\n- Event-derived assists are calculated from event relationships and are not official league assist records.\n- Pressure counts represent pressure-event volume and do not by themselves measure pressing quality.\n- Progressive passing was investigated but was not finalized because raw pitch-coordinate movement does not account for attacking direction/orientation.\n- Aerial duels lost is treated as a descriptive loss metric; an aerial-wins metric was not invented from incomplete information.\n\nThese limitations should be considered when interpreting analytical or machine-learning outputs.\n\n---"
+  },
+  {
+    "chunk_id": 14,
+    "source": "dataset_overview.md",
+    "section": "10. Machine Learning Dataset",
+    "chunk_number": 14,
+    "text": "10. Machine Learning Dataset\n\nThe project has developed machine-learning datasets from the validated football database.\n\nThe player similarity pipeline currently uses:\n\n- 316 players\n- 15 football performance features\n- per-90 event-based metrics\n\nThe player clustering pipeline uses the same validated 15-feature player representation.\n\nThe player performance prediction pipeline predicts a player's total xG across their next five appearances using information from their previous five appearances.\n\nThe match-outcome prediction pipeline uses pre-match information derived from previous team matches to predict:\n\n- HOME_WIN\n- DRAW\n- AWAY_WIN\n\nAll machine-learning pipelines use chronological validation where appropriate to reduce temporal leakage.\n\n---"
+  },
+  {
+    "chunk_id": 15,
+    "source": "dataset_overview.md",
+    "section": "11. RAG Purpose",
+    "chunk_number": 15,
+    "text": "11. RAG Purpose\n\nThe RAG component will use project documentation to provide grounded answers about:\n\n- dataset scope\n- football metric definitions\n- scouting methodology\n- machine-learning methodology\n- project limitations\n- analytical assumptions\n\nRAG is not intended to replace structured SQL analytics or machine-learning models.\n\nThe intended architecture is:\n\nUser Question\n→ determine information type\n→ SQL / ML / RAG / Agent\n→ retrieve or calculate evidence\n→ generate grounded response\n\nThe language model should act as an explanation and orchestration layer rather than the source of truth for structured football statistics.\n\n---"
+  },
+  {
+    "chunk_id": 16,
+    "source": "dataset_overview.md",
+    "section": "12. Current Project Limitations",
+    "chunk_number": 16,
+    "text": "12. Current Project Limitations\n\nThe current project does not claim:\n\n- coverage of all available StatsBomb Open Data competitions and seasons\n- live football data\n- current player statistics\n- current transfer values\n- current market values\n- official transfer-fee prediction\n- universal player-quality rankings\n\nThe current database is intentionally limited to Premier League 2015/16 while the core pipeline is developed and validated.\n\nFuture expansion can process additional competition-season datasets using the validated ETL and database architecture.\n\nAny cross-competition or cross-season analysis should first account for differences in dataset coverage and feature availability.\n\n---"
+  },
+  {
+    "chunk_id": 17,
+    "source": "dataset_overview.md",
+    "section": "13. Data Attribution",
+    "chunk_number": 17,
+    "text": "13. Data Attribution\n\nThe project uses StatsBomb Open Data.\n\nIf the project or derived work is publicly distributed, the applicable StatsBomb Open Data attribution and usage requirements must be followed."
+  },
+  {
+    "chunk_id": 18,
+    "source": "football_metrics.md",
+    "section": "1. Purpose",
+    "chunk_number": 0,
+    "text": "1. Purpose\n\nThis document defines the football metrics used by Football Intelligence AI.\n\nThe metrics are derived primarily from StatsBomb event data and player-match data.\n\nMetrics should be interpreted in the context of the project's dataset, methodology, exposure thresholds, and known limitations.\n\n---"
+  },
+  {
+    "chunk_id": 19,
+    "source": "football_metrics.md",
+    "section": "Goals",
+    "chunk_number": 1,
+    "text": "Goals\n\nGoals represent the number of goals scored by a team or player.\n\nMatch-level goals are obtained from the match data and are also cross-checked against event-level goal information.\n\nIn the current dataset:\n\n- 988 goals are recorded through shot events\n- 38 own goals are recorded\n- 1,026 total match-level goals are represented\n\nThe event-level reconciliation is:\n\n`988 shot goals + 38 own goals = 1,026 match-level goals`\n\n---"
+  },
+  {
+    "chunk_id": 20,
+    "source": "football_metrics.md",
+    "section": "3. Expected Goals (xG)",
+    "chunk_number": 2,
+    "text": "3. Expected Goals (xG)\n\nExpected goals (xG) estimates the probability that a shot results in a goal.\n\nThe project uses the `shot_xg` value supplied by the StatsBomb event data.\n\nPlayer and team xG can therefore be aggregated from shot events.\n\nExamples:\n\n- total xG\n- xG per 90\n- xG compared with actual goals\n- xG-based attacking profiles\n\nxG should not be interpreted as a prediction that a specific shot will definitely become a goal.\n\n---"
+  },
+  {
+    "chunk_id": 21,
+    "source": "football_metrics.md",
+    "section": "Shots",
+    "chunk_number": 3,
+    "text": "Shots\n\nA shot is an event recorded with event type `Shot`.\n\nCommon derived metrics include:\n\n- total shots\n- shots per 90\n- shots compared with xG\n- shots compared with goals"
+  },
+  {
+    "chunk_id": 22,
+    "source": "football_metrics.md",
+    "section": "Goals per 90",
+    "chunk_number": 4,
+    "text": "Goals per 90\n\nGoals per 90 represents goals relative to the player's recorded playing-time exposure.\n\nIt can be useful descriptively but can become unstable for players with very small playing-time samples.\n\nFor this reason, the project's scouting population uses a minimum exposure threshold."
+  },
+  {
+    "chunk_id": 23,
+    "source": "football_metrics.md",
+    "section": "xG per 90",
+    "chunk_number": 5,
+    "text": "xG per 90\n\nxG per 90 represents accumulated xG relative to recorded playing time.\n\nIt is used to compare attacking production across players with different amounts of playing time.\n\n---"
+  },
+  {
+    "chunk_id": 24,
+    "source": "football_metrics.md",
+    "section": "Passes",
+    "chunk_number": 6,
+    "text": "Passes\n\nA pass is an event with event type `Pass`.\n\nThe project can calculate:\n\n- total passes\n- passes per 90\n- pass distance per 90\n- passing volume by team\n- passing volume by player"
+  },
+  {
+    "chunk_id": 25,
+    "source": "football_metrics.md",
+    "section": "Completed Passes",
+    "chunk_number": 7,
+    "text": "Completed Passes\n\nPass outcomes can be used to identify incomplete passes.\n\nHowever, successful StatsBomb passes can omit a `pass.outcome` value.\n\nTherefore, the absence of a pass outcome is not automatically treated as an unsuccessful pass."
+  },
+  {
+    "chunk_id": 26,
+    "source": "football_metrics.md",
+    "section": "Pass Distance",
+    "chunk_number": 8,
+    "text": "Pass Distance\n\nStatsBomb provides pass length.\n\nThe project aggregates pass length to measure passing distance and can normalize it per 90 minutes."
+  },
+  {
+    "chunk_id": 27,
+    "source": "football_metrics.md",
+    "section": "Key Passes",
+    "chunk_number": 9,
+    "text": "Key Passes\n\nA key pass is treated as a chance-creation event identified through the event data and used in the project's player analytics.\n\nKey passes are used for:\n\n- chance creation analysis\n- chance creation per 90\n- scouting profiles\n- player similarity features\n\n---"
+  },
+  {
+    "chunk_id": 28,
+    "source": "football_metrics.md",
+    "section": "6. Event-Derived Assists",
+    "chunk_number": 10,
+    "text": "6. Event-Derived Assists\n\nThe project calculates an event-derived assist metric from event relationships.\n\nThis metric is not treated as an official league assist statistic.\n\nIt is used for analytical purposes such as:\n\n- assists per 90\n- player chance creation\n- player comparisons\n- exploratory analysis\n\nWhen reporting this metric, it should be described as an event-derived assist rather than an official assist record.\n\n---"
+  },
+  {
+    "chunk_id": 29,
+    "source": "football_metrics.md",
+    "section": "7. Pressure Metrics",
+    "chunk_number": 11,
+    "text": "7. Pressure Metrics\n\nA pressure is a StatsBomb event representing pressure activity.\n\nThe project calculates:\n\n- total pressures\n- pressures per 90\n- team pressure activity\n- player pressure activity\n\nPressure count measures the volume of recorded pressure events.\n\nIt does not by itself measure:\n\n- pressure effectiveness\n- whether possession was regained\n- defensive success\n- tactical quality of a pressing action\n\nTherefore, pressure volume should not be interpreted as a complete measure of pressing quality.\n\n---"
+  },
+  {
+    "chunk_id": 30,
+    "source": "football_metrics.md",
+    "section": "8. Defensive Metrics",
+    "chunk_number": 12,
+    "text": "8. Defensive Metrics\n\nThe project uses several defensive event types."
+  },
+  {
+    "chunk_id": 31,
+    "source": "football_metrics.md",
+    "section": "Tackles",
+    "chunk_number": 13,
+    "text": "Tackles\n\nTackle events are used to measure defensive tackling activity.\n\nCommon metric:\n\n`tackles per 90`"
+  },
+  {
+    "chunk_id": 32,
+    "source": "football_metrics.md",
+    "section": "Interceptions",
+    "chunk_number": 14,
+    "text": "Interceptions\n\nInterception events represent recorded interceptions.\n\nCommon metrics:\n\n- total interceptions\n- interceptions per 90"
+  },
+  {
+    "chunk_id": 33,
+    "source": "football_metrics.md",
+    "section": "Clearances",
+    "chunk_number": 15,
+    "text": "Clearances\n\nClearance events represent recorded clearances.\n\nCommon metrics:\n\n- total clearances\n- clearances per 90"
+  },
+  {
+    "chunk_id": 34,
+    "source": "football_metrics.md",
+    "section": "Defensive Activity",
+    "chunk_number": 16,
+    "text": "Defensive Activity\n\nThe project can combine defensive event rates to describe defensive activity.\n\nDefensive activity is a constructed analytical profile rather than an official single football statistic.\n\n---"
+  },
+  {
+    "chunk_id": 35,
+    "source": "football_metrics.md",
+    "section": "Carries",
+    "chunk_number": 17,
+    "text": "Carries\n\nA carry is a recorded event where a player moves with the ball.\n\nCommon metrics:\n\n- total carries\n- carries per 90"
+  },
+  {
+    "chunk_id": 36,
+    "source": "football_metrics.md",
+    "section": "Dribbles",
+    "chunk_number": 18,
+    "text": "Dribbles\n\nDribble events are used to measure dribbling activity.\n\nCommon metrics:\n\n- total dribbles\n- dribbles per 90"
+  },
+  {
+    "chunk_id": 37,
+    "source": "football_metrics.md",
+    "section": "Successful Dribbles",
+    "chunk_number": 19,
+    "text": "Successful Dribbles\n\nThe project can identify successful dribbles using the recorded dribble outcome.\n\nSuccessful dribbles can be compared with total dribbles to describe dribbling efficiency.\n\n---"
+  },
+  {
+    "chunk_id": 38,
+    "source": "football_metrics.md",
+    "section": "10. Duel Metrics",
+    "chunk_number": 20,
+    "text": "10. Duel Metrics\n\nDuel events are used to measure player involvement in physical or contested situations.\n\nCommon metrics:\n\n- total duels\n- duels per 90\n- duel-type breakdowns\n\nThe project also examines aerial duel losses."
+  },
+  {
+    "chunk_id": 39,
+    "source": "football_metrics.md",
+    "section": "Aerial Duels Lost",
+    "chunk_number": 21,
+    "text": "Aerial Duels Lost\n\n`Aerial Lost` is treated as a descriptive duel subtype.\n\nThe project does not invent an aerial-wins metric from incomplete information.\n\nFor scouting percentile calculations, aerial duels lost is treated as a lower-is-better metric.\n\n---"
+  },
+  {
+    "chunk_id": 40,
+    "source": "football_metrics.md",
+    "section": "11. Ball Retention Metrics",
+    "chunk_number": 22,
+    "text": "11. Ball Retention Metrics\n\nThe project uses several events to describe ball-retention and ball-recovery behavior."
+  },
+  {
+    "chunk_id": 41,
+    "source": "football_metrics.md",
+    "section": "Miscontrols",
+    "chunk_number": 23,
+    "text": "Miscontrols\n\nA miscontrol represents a recorded loss of control of the ball.\n\nCommon metric:\n\n`miscontrols per 90`"
+  },
+  {
+    "chunk_id": 42,
+    "source": "football_metrics.md",
+    "section": "Dispossessed",
+    "chunk_number": 24,
+    "text": "Dispossessed\n\nA dispossession represents a recorded event where a player loses possession to an opponent.\n\nCommon metric:\n\n`dispossessed per 90`"
+  },
+  {
+    "chunk_id": 43,
+    "source": "football_metrics.md",
+    "section": "Ball Recoveries",
+    "chunk_number": 25,
+    "text": "Ball Recoveries\n\nBall Recovery events are used to describe recovery activity.\n\nCommon metric:\n\n`ball recoveries per 90`\n\nThese metrics can be combined into a broader retention/recovery analytical profile.\n\n---"
+  },
+  {
+    "chunk_id": 44,
+    "source": "football_metrics.md",
+    "section": "12. Per-90 Methodology",
+    "chunk_number": 26,
+    "text": "12. Per-90 Methodology\n\nMany player metrics are normalized per 90 minutes.\n\nThe project uses validated elapsed StatsBomb match-clock minutes for this calculation.\n\nThis includes stoppage time when represented in the lineup timing and match-specific final match-clock data.\n\nThe basic concept is:\n\n`per 90 metric = event count or value / minutes played × 90`\n\nThe project does not describe this as a universal official definition of per-90 playing time.\n\n---"
+  },
+  {
+    "chunk_id": 45,
+    "source": "football_metrics.md",
+    "section": "13. Player Exposure Threshold",
+    "chunk_number": 27,
+    "text": "13. Player Exposure Threshold\n\nThe main scouting population requires at least:\n\n`900 minutes`\n\nPlayers below this threshold are excluded from the main scouting feature population.\n\nThis reduces the effect of extremely small samples on:\n\n- per-90 metrics\n- player comparisons\n- scouting profiles\n- similarity analysis\n- clustering\n\nThe resulting scouting population contains 316 players.\n\n---"
+  },
+  {
+    "chunk_id": 46,
+    "source": "football_metrics.md",
+    "section": "14. Role-Based Analysis",
+    "chunk_number": 28,
+    "text": "14. Role-Based Analysis\n\nPlayers are assigned to analytical role groups based on their primary position.\n\nThe project currently uses eight analytical role groups:\n\n1. Goalkeeper\n2. Centre Back\n3. Full Back\n4. Defensive Midfielder\n5. Central Midfielder\n6. Attacking Midfielder\n7. Winger\n8. Forward\n\nPrimary position is determined using accumulated playing minutes by position.\n\nThe position with the greatest accumulated minutes is treated as the player's primary position.\n\n---"
+  },
+  {
+    "chunk_id": 47,
+    "source": "football_metrics.md",
+    "section": "15. Percentile Metrics",
+    "chunk_number": 29,
+    "text": "15. Percentile Metrics\n\nThe scouting system converts selected player metrics into within-role percentile scores.\n\nA percentile indicates how a player compares with other players in the same analytical role.\n\nFor example:\n\n- 90th percentile = higher than approximately 90% of players in that role\n- 50th percentile = around the middle of the role population\n\nThe project's percentile system is comparative rather than an absolute measure of football quality.\n\nCertain metrics are reversed because lower values are considered better for that metric.\n\nCurrently reversed examples include:\n\n- aerial duels lost\n- miscontrols\n- dispossessed\n\n---"
+  },
+  {
+    "chunk_id": 48,
+    "source": "football_metrics.md",
+    "section": "16. Scouting Profiles",
+    "chunk_number": 30,
+    "text": "16. Scouting Profiles\n\nThe project groups football metrics into seven analytical categories:\n\n1. Shooting\n2. Chance Creation\n3. Passing\n4. Defensive\n5. Carrying\n6. Duels\n7. Retention/Recovery\n\nThese category profiles are constructed from role-specific percentile metrics.\n\nThey are used for:\n\n- player scouting\n- player comparison\n- similarity analysis\n- clustering\n- scouting scores\n\n---"
+  },
+  {
+    "chunk_id": 49,
+    "source": "football_metrics.md",
+    "section": "17. Scouting Score",
+    "chunk_number": 31,
+    "text": "17. Scouting Score\n\nThe project creates a role-aware scouting score from the category profiles.\n\nThe score uses transparent, project-defined weights that differ by analytical role.\n\nThe score is:\n\n- rule-based\n- role-specific\n- constructed by the project\n- not learned by machine learning\n- not a universal measure of player quality\n\nPosition share is kept separately as a confidence/versatility indicator rather than being directly treated as player quality.\n\nGoalkeeper scoring is provisional because the current feature set contains fewer goalkeeper-specific metrics.\n\n---"
+  },
+  {
+    "chunk_id": 50,
+    "source": "football_metrics.md",
+    "section": "18. Progressive Passing Limitation",
+    "chunk_number": 32,
+    "text": "18. Progressive Passing Limitation\n\nProgressive passing was investigated during analytics development.\n\nIt was not finalized as a core metric.\n\nThe reason is that raw pitch-coordinate movement alone does not reliably account for attacking direction and team orientation.\n\nTherefore, the project does not currently claim to have a fully direction-aware progressive-passing metric.\n\n---"
+  },
+  {
+    "chunk_id": 51,
+    "source": "football_metrics.md",
+    "section": "19. Metric Interpretation Principles",
+    "chunk_number": 33,
+    "text": "19. Metric Interpretation Principles\n\nFootball Intelligence AI follows several principles when interpreting metrics:\n\n1. Event volume is not automatically event quality.\n2. Per-90 metrics should be interpreted alongside playing-time exposure.\n3. Small samples can produce unstable rates.\n4. Derived metrics should be clearly distinguished from official statistics.\n5. Percentiles are relative to the comparison population.\n6. Scouting scores are project-defined analytical constructs.\n7. Correlation does not establish causation.\n8. Machine-learning feature importance does not establish causal importance.\n\n---"
+  },
+  {
+    "chunk_id": 52,
+    "source": "football_metrics.md",
+    "section": "20. Data Source Principle",
+    "chunk_number": 34,
+    "text": "20. Data Source Principle\n\nThe underlying event-level football information comes from StatsBomb Open Data.\n\nWhere the project creates an analytical metric from those events, the metric should be described as a project-derived or event-derived metric when it is not directly an official statistic.\n\nThe system should avoid presenting derived metrics as official league statistics."
+  },
+  {
+    "chunk_id": 53,
+    "source": "ml_methodology.md",
+    "section": "1. Purpose",
+    "chunk_number": 0,
+    "text": "1. Purpose\n\nThe machine-learning layer of Football Intelligence AI extends the football analytics system with:\n\n- player similarity\n- player clustering\n- player performance prediction\n- match outcome prediction\n\nThe models are built on top of the validated football database and derived analytical features.\n\nThe project distinguishes between:\n\n- descriptive analytics\n- unsupervised machine learning\n- supervised machine learning\n- model validation\n- football-domain interpretation\n\nMachine-learning outputs are treated as analytical predictions rather than guaranteed football outcomes.\n\n---"
+  },
+  {
+    "chunk_id": 54,
+    "source": "ml_methodology.md",
+    "section": "2. ML Dataset Foundation",
+    "chunk_number": 1,
+    "text": "2. ML Dataset Foundation\n\nThe main player machine-learning population contains:\n\n- 316 players\n- minimum 900 recorded minutes\n- 15 validated football performance features\n\nThe 15-feature player representation contains:\n\n1. shots per 90\n2. xG per 90\n3. key passes per 90\n4. passes per 90\n5. pass distance per 90\n6. pressures per 90\n7. tackles per 90\n8. interceptions per 90\n9. clearances per 90\n10. carries per 90\n11. dribbles per 90\n12. duels per 90\n13. miscontrols per 90\n14. dispossessed per 90\n15. ball recoveries per 90\n\nThe feature matrix was validated before being used by the machine-learning models.\n\nValidation confirmed:\n\n- 316 players\n- 15 features\n- zero missing feature values\n- zero non-finite values\n- zero duplicate player IDs\n\n---"
+  },
+  {
+    "chunk_id": 55,
+    "source": "ml_methodology.md",
+    "section": "3. Feature Selection",
+    "chunk_number": 2,
+    "text": "3. Feature Selection\n\nAn initial 20-feature representation was examined.\n\nFive features were removed from the final similarity representation:\n\n- goals per 90\n- assists per 90\n- completed passes per 90\n- successful dribbles per 90\n- aerial duels lost per 90\n\nThe reasons were primarily redundancy and feature interpretation.\n\nGoals per 90 was removed because it overlaps strongly with shooting and xG-related information and can be noisy.\n\nAssists per 90 was removed because it overlaps with key-pass information and can be low-volume.\n\nCompleted passes per 90 was removed because it is highly redundant with total passes per 90.\n\nSuccessful dribbles per 90 was removed because it is highly redundant with dribble volume.\n\nAerial duels lost was removed because it is a one-sided loss measure rather than a complete representation of aerial ability.\n\nThis feature reduction is a modeling judgment.\n\nIt has not been established as an empirically optimal feature-selection procedure.\n\n---"
+  },
+  {
+    "chunk_id": 56,
+    "source": "ml_methodology.md",
+    "section": "4. Feature Correlation",
+    "chunk_number": 3,
+    "text": "4. Feature Correlation\n\nThe original feature matrix was examined for redundancy.\n\nImportant high correlations included:\n\n- shots and xG: approximately 0.900\n- shots and goals: approximately 0.859\n- xG and goals: approximately 0.917\n- key passes and assists: approximately 0.825\n- passes and completed passes: approximately 0.973\n- dribbles and successful dribbles: approximately 0.978\n- dribbles and dispossessed: approximately 0.878\n- miscontrols and dispossessed: approximately 0.890\n- duels and aerial duels lost: approximately 0.858\n\nThis analysis informed the reduction from 20 to 15 features.\n\n---"
+  },
+  {
+    "chunk_id": 57,
+    "source": "ml_methodology.md",
+    "section": "5. ML 1 — Feature Engineering and Quality Control",
+    "chunk_number": 4,
+    "text": "5. ML 1 — Feature Engineering and Quality Control\n\nML 1 established the validated machine-learning feature matrix.\n\nThe process included:\n\n1. querying structured football data from SQLite\n2. calculating player-level performance features\n3. normalizing event statistics per 90 minutes\n4. restricting the population to players with at least 900 minutes\n5. inspecting feature correlations\n6. removing selected redundant features\n7. validating the final matrix\n\nThe final matrix contains:\n\n`316 players × 15 features`\n\nQuality checks passed for:\n\n- missing values\n- non-finite values\n- duplicate player IDs\n- zero-variance features\n\n---"
+  },
+  {
+    "chunk_id": 58,
+    "source": "ml_methodology.md",
+    "section": "Objective",
+    "chunk_number": 5,
+    "text": "Objective\n\nIdentify statistically similar players using their football performance profiles."
+  },
+  {
+    "chunk_id": 59,
+    "source": "ml_methodology.md",
+    "section": "Method",
+    "chunk_number": 6,
+    "text": "Method\n\nThe 15 player features are standardized using:\n\n`StandardScaler`\n\nSimilarity is then calculated using:\n\n`Cosine Similarity`\n\nThis produces a:\n\n`316 × 316`\n\nplayer similarity matrix.\n\nEach matrix value represents the similarity between two standardized player profiles.\n\n---"
+  },
+  {
+    "chunk_id": 60,
+    "source": "ml_methodology.md",
+    "section": "Role-Aware Similarity",
+    "chunk_number": 7,
+    "text": "Role-Aware Similarity\n\nThe similarity model was subsequently made role-aware.\n\nEach player's primary position is determined from accumulated playing minutes.\n\nThe primary position is mapped into one of eight analytical role groups:\n\n1. Goalkeeper\n2. Centre Back\n3. Full Back\n4. Defensive Midfielder\n5. Central Midfielder\n6. Attacking Midfielder\n7. Winger\n8. Forward\n\nPlayers are compared only against candidates from the same analytical role.\n\nThe role is therefore used as a candidate filter rather than as a numerical ML feature.\n\nThis prevents obviously inappropriate cross-role comparisons.\n\n---"
+  },
+  {
+    "chunk_id": 61,
+    "source": "ml_methodology.md",
+    "section": "Similarity Interpretation",
+    "chunk_number": 8,
+    "text": "Similarity Interpretation\n\nA high similarity score means that two players have similar values across the selected statistical feature representation.\n\nIt does not mean that the players:\n\n- have identical tactical roles\n- have identical playing styles\n- have equal quality\n- have equal potential\n- are guaranteed tactical replacements\n\n---"
+  },
+  {
+    "chunk_id": 62,
+    "source": "ml_methodology.md",
+    "section": "ML 2 Validation",
+    "chunk_number": 9,
+    "text": "ML 2 Validation\n\nSimilarity validation checked:\n\n- expected player population\n- feature completeness\n- role availability\n- player uniqueness\n- absence of self-matches\n- role consistency of returned candidates\n- availability of at least five similar candidates\n\nFive representative roles were successfully validated:\n\n- Centre Back\n- Full Back\n- Attacking Midfielder\n- Winger\n- Forward\n\nThe current validation script uses five representative player tests.\n\nThree earlier exact-name tests were not retained because the database names did not exactly match the test strings.\n\nThe similarity algorithm itself supports arbitrary players available in the validated population.\n\n---"
+  },
+  {
+    "chunk_id": 63,
+    "source": "ml_methodology.md",
+    "section": "Objective",
+    "chunk_number": 10,
+    "text": "Objective\n\nIdentify natural statistical player archetypes without directly supplying football role labels to the clustering algorithm."
+  },
+  {
+    "chunk_id": 64,
+    "source": "ml_methodology.md",
+    "section": "Method",
+    "chunk_number": 11,
+    "text": "Method\n\nThe same 15-feature player representation is:\n\n1. standardized\n2. passed to K-Means clustering\n\nDifferent values of K were evaluated.\n\nThe tested range was:\n\n`K = 2 through 10`\n\nSilhouette scores were:\n\n- K=2: 0.307972\n- K=3: 0.259656\n- K=4: 0.299865\n- K=5: 0.306181\n- K=6: 0.282497\n- K=7: 0.272230\n- K=8: 0.255504\n- K=9: 0.245525\n- K=10: 0.240544\n\n---"
+  },
+  {
+    "chunk_id": 65,
+    "source": "ml_methodology.md",
+    "section": "Cluster Selection",
+    "chunk_number": 12,
+    "text": "Cluster Selection\n\nK=2 produced the highest numerical silhouette score.\n\nHowever, K=5 produced an almost identical score while producing substantially more interpretable football archetypes.\n\nThe project therefore selected:\n\n`K = 5`\n\nThis decision combines quantitative separation with football-domain interpretability.\n\n---"
+  },
+  {
+    "chunk_id": 66,
+    "source": "ml_methodology.md",
+    "section": "Final Archetypes",
+    "chunk_number": 13,
+    "text": "Final Archetypes\n\nThe five clusters were interpreted as:\n\n1. Goalkeeper\n2. Two-Way / High-Volume\n3. Finishing Forward\n4. Creative Attacker\n5. Defensive Player\n\nThese names are human interpretations of the resulting statistical clusters.\n\nThey are not labels learned by K-Means.\n\n---"
+  },
+  {
+    "chunk_id": 67,
+    "source": "ml_methodology.md",
+    "section": "Cluster Quality",
+    "chunk_number": 14,
+    "text": "Cluster Quality\n\nThe mean silhouette scores for the final clusters were:\n\n- Goalkeeper cluster: approximately 0.806\n- Two-Way / High-Volume: approximately 0.178\n- Finishing Forward: approximately 0.337\n- Creative Attacker: approximately 0.196\n- Defensive Player: approximately 0.372\n\nThe lower scores for some clusters indicate that certain player profiles overlap.\n\nTherefore, the archetypes should be treated as statistical groupings rather than rigid football categories.\n\n---"
+  },
+  {
+    "chunk_id": 68,
+    "source": "ml_methodology.md",
+    "section": "ML 3 Validation",
+    "chunk_number": 15,
+    "text": "ML 3 Validation\n\nValidation confirmed:\n\n- 316 expected players\n- 316 actual players\n- five clusters\n- no missing cluster labels\n- no missing archetype labels\n- zero duplicate player IDs\n- 316 cluster assignments\n- five cluster profiles\n\nML3 technical validation passed.\n\n---"
+  },
+  {
+    "chunk_id": 69,
+    "source": "ml_methodology.md",
+    "section": "Objective",
+    "chunk_number": 16,
+    "text": "Objective\n\nPredict a player's total xG across their next five appearances using information from their previous five appearances.\n\nThe target is:\n\n`target_future_xg`\n\nwhere the target represents the sum of xG across the player's next five appearances.\n\nThe model does not predict future xG per 90.\n\nThis target was selected because future total xG provides a more stable prediction target than short-window goals-per-90 rates.\n\n---"
+  },
+  {
+    "chunk_id": 70,
+    "source": "ml_methodology.md",
+    "section": "9. ML 4 Feature Construction",
+    "chunk_number": 17,
+    "text": "9. ML 4 Feature Construction\n\nFor each prediction snapshot:\n\n- the previous five appearances provide historical information\n- the next five appearances provide the prediction target\n\nThe historical features include:\n\n- shots per 90\n- xG per 90\n- passes per 90\n- pressures per 90\n- duels per 90\n- carries per 90\n- dribbles per 90\n- interceptions per 90\n- clearances per 90\n- miscontrols per 90\n- dispossessed per 90\n- ball recoveries per 90\n\nThe model therefore uses recent player performance to forecast near-future attacking output.\n\n---"
+  },
+  {
+    "chunk_id": 71,
+    "source": "ml_methodology.md",
+    "section": "10. ML 4 Temporal Validation",
+    "chunk_number": 18,
+    "text": "10. ML 4 Temporal Validation\n\nTemporal leakage was treated as a major validation concern.\n\nThe final ML4 pipeline enforces:\n\n- exactly five historical appearances\n- exactly five future target appearances\n- all historical appearances before the future target window\n- training target windows entirely before testing target windows\n- zero target-window overlap\n\nThe final dataset contained:\n\n- 6,276 prediction snapshots\n- 3,901 training snapshots\n- 1,126 testing snapshots\n\nThe training target period was:\n\n`2015-09-19 to 2016-02-07`\n\nThe testing target period was:\n\n`2016-03-05 to 2016-04-24`\n\nThe latest match used by any training target was match order 281.\n\nThe first match used by any testing target was match order 282.\n\nTarget-window overlap:\n\n`0`\n\nThis confirms that the final train/test target periods were chronologically separated.\n\n---"
+  },
+  {
+    "chunk_id": 72,
+    "source": "ml_methodology.md",
+    "section": "11. ML 4 Models",
+    "chunk_number": 19,
+    "text": "11. ML 4 Models\n\nThree approaches were compared:"
+  },
+  {
+    "chunk_id": 73,
+    "source": "ml_methodology.md",
+    "section": "Mean Baseline",
+    "chunk_number": 20,
+    "text": "Mean Baseline\n\nPredicts the mean future xG observed in the training set."
+  },
+  {
+    "chunk_id": 74,
+    "source": "ml_methodology.md",
+    "section": "Linear Regression",
+    "chunk_number": 21,
+    "text": "Linear Regression\n\nA linear regression model was used as a simple supervised baseline."
+  },
+  {
+    "chunk_id": 75,
+    "source": "ml_methodology.md",
+    "section": "Random Forest Regressor",
+    "chunk_number": 22,
+    "text": "Random Forest Regressor\n\nThe final Random Forest configuration used:\n\n- 300 trees\n- maximum depth: 8\n- minimum samples per leaf: 10\n- random state: 42\n- parallel processing\n\n---"
+  },
+  {
+    "chunk_id": 76,
+    "source": "ml_methodology.md",
+    "section": "Linear Regression",
+    "chunk_number": 23,
+    "text": "Linear Regression\n\n- MAE: 0.5093\n- RMSE: 0.7945\n- R²: -0.3682"
+  },
+  {
+    "chunk_id": 77,
+    "source": "ml_methodology.md",
+    "section": "Random Forest",
+    "chunk_number": 24,
+    "text": "Random Forest\n\n- MAE: 0.3271\n- RMSE: 0.5352\n- R²: 0.3792"
+  },
+  {
+    "chunk_id": 78,
+    "source": "ml_methodology.md",
+    "section": "Mean Baseline",
+    "chunk_number": 25,
+    "text": "Mean Baseline\n\n- MAE: 0.4748\n- RMSE: 0.6793\n- R²: approximately 0\n\nThe Random Forest improved over the mean baseline by:\n\n- 31.10% MAE\n- 21.21% RMSE\n\nThe Random Forest therefore provided a meaningful improvement over the baseline under the final strict chronological validation.\n\nThe test R² of 0.3792 should not be interpreted as 38% prediction accuracy.\n\nIt is the coefficient of determination on this specific held-out test period.\n\n---"
+  },
+  {
+    "chunk_id": 79,
+    "source": "ml_methodology.md",
+    "section": "13. ML 4 Feature Importance",
+    "chunk_number": 26,
+    "text": "13. ML 4 Feature Importance\n\nThe Random Forest feature importances were:\n\n- xG per 90: 0.491074\n- passes per 90: 0.124564\n- shots per 90: 0.071259\n- pressures per 90: 0.054951\n- miscontrols per 90: 0.049254\n- clearances per 90: 0.045045\n- dribbles per 90: 0.040247\n- duels per 90: 0.032758\n- carries per 90: 0.030993\n- ball recoveries per 90: 0.023064\n- dispossessed per 90: 0.020248\n- interceptions per 90: 0.016543\n\nFeature importance indicates how useful features were to the fitted Random Forest under its training process.\n\nIt does not establish causal relationships.\n\n---"
+  },
+  {
+    "chunk_id": 80,
+    "source": "ml_methodology.md",
+    "section": "14. Rejected ML 4 Formulations",
+    "chunk_number": 27,
+    "text": "14. Rejected ML 4 Formulations\n\nSeveral earlier formulations were evaluated and rejected."
+  },
+  {
+    "chunk_id": 81,
+    "source": "ml_methodology.md",
+    "section": "Next-appearance goals per 90",
+    "chunk_number": 28,
+    "text": "Next-appearance goals per 90\n\nThis produced unstable values because short appearances can create extremely large per-90 rates.\n\nResults included:\n\n- MAE: 3.2115\n- RMSE: 5.8629\n- R²: -1.9459\n\nThe baseline performed better.\n\nThis formulation was rejected.\n\n---"
+  },
+  {
+    "chunk_id": 82,
+    "source": "ml_methodology.md",
+    "section": "Next-appearance total goals",
+    "chunk_number": 29,
+    "text": "Next-appearance total goals\n\nA Linear Regression approach produced:\n\n- MAE: 0.1932\n- RMSE: 0.3764\n- R²: -0.0126\n\nThe baseline was slightly better.\n\nNegative predictions were also possible.\n\nThis formulation was rejected.\n\n---"
+  },
+  {
+    "chunk_id": 83,
+    "source": "ml_methodology.md",
+    "section": "Poisson Regression for next-appearance goals",
+    "chunk_number": 30,
+    "text": "Poisson Regression for next-appearance goals\n\nResults included:\n\n- MAE: 0.1921\n- RMSE: 0.3744\n- R²: -0.0018\n\nThe model was technically valid but provided little useful improvement over the baseline.\n\nThis formulation was rejected.\n\n---"
+  },
+  {
+    "chunk_id": 84,
+    "source": "ml_methodology.md",
+    "section": "Future five-appearance mean xG per 90",
+    "chunk_number": 31,
+    "text": "Future five-appearance mean xG per 90\n\nThis target produced extremely large values because of small future-minute denominators.\n\nThe target reached values above 500 in the training period and above 800 in the testing period.\n\nLinear Regression also produced negative predictions.\n\nThe target definition was rejected.\n\n---"
+  },
+  {
+    "chunk_id": 85,
+    "source": "ml_methodology.md",
+    "section": "Objective",
+    "chunk_number": 32,
+    "text": "Objective\n\nPredict:\n\n- HOME_WIN\n- DRAW\n- AWAY_WIN\n\nusing only information available before the match.\n\nThe system deliberately excludes the current match's result and current-match event information from the predictive features.\n\n---"
+  },
+  {
+    "chunk_id": 86,
+    "source": "ml_methodology.md",
+    "section": "16. ML 5 Feature Construction",
+    "chunk_number": 33,
+    "text": "16. ML 5 Feature Construction\n\nThe feature-generation pipeline aggregates event data to the team-match level.\n\nThe following event categories are used:\n\n- shots\n- xG\n- passes\n- pressures\n- carries\n- duels\n- interceptions\n- clearances\n\nTeam performance is then converted into previous-match form information.\n\nThe system calculates:\n\n- general previous-five-match form\n- home-specific previous-five-match form\n- away-specific previous-five-match form\n- home-vs-away difference features\n\nThe current match outcome is excluded from the historical feature calculations.\n\n---"
+  },
+  {
+    "chunk_id": 87,
+    "source": "ml_methodology.md",
+    "section": "17. ML 5 Efficiency Improvement",
+    "chunk_number": 34,
+    "text": "17. ML 5 Efficiency Improvement\n\nThe original implementation loaded all 1,313,773 event rows into Pandas.\n\nThis was replaced by SQL aggregation inside SQLite.\n\nThe database aggregates event records into team-match statistics before the data reaches Pandas.\n\nThis reduces the event-level working dataset to:\n\n`760 team-match rows`\n\nThe change improves memory efficiency while preserving the analytical logic.\n\nIt also demonstrates the intended architecture of using SQL for structured aggregation rather than unnecessarily loading the full event table into memory.\n\n---"
+  },
+  {
+    "chunk_id": 88,
+    "source": "ml_methodology.md",
+    "section": "18. ML 5 Feature Validation",
+    "chunk_number": 35,
+    "text": "18. ML 5 Feature Validation\n\nThe final pre-match feature dataset contains:\n\n- 380 total matches\n- 280 matches with sufficient previous-five history\n- 100 matches excluded because one or both teams lacked five previous matches\n\nThe target distribution is:\n\n- HOME_WIN: 122\n- DRAW: 79\n- AWAY_WIN: 79\n\nValidation confirmed:\n\n- current match result excluded from features\n- zero missing feature values\n- zero duplicate match IDs\n- chronological match ordering\n\nML5 feature validation passed.\n\n---"
+  },
+  {
+    "chunk_id": 89,
+    "source": "ml_methodology.md",
+    "section": "19. ML 5 Models",
+    "chunk_number": 36,
+    "text": "19. ML 5 Models\n\nThree approaches were compared:\n\n1. Majority-class baseline\n2. Logistic Regression\n3. Random Forest Classifier\n\nThe Random Forest configuration used:\n\n- 300 trees\n- maximum depth: 8\n- minimum samples per leaf: 5\n- random state: 42\n- parallel processing\n\n---"
+  },
+  {
+    "chunk_id": 90,
+    "source": "ml_methodology.md",
+    "section": "20. ML 5 Chronological Validation",
+    "chunk_number": 37,
+    "text": "20. ML 5 Chronological Validation\n\nThe usable 280 matches were split chronologically:\n\n- training: 224 matches\n- testing: 56 matches\n\nTraining period:\n\n`2015-10-31 to 2016-04-13`\n\nTesting period:\n\n`2016-04-16 to 2016-05-17`\n\nThe last training match occurred before the first testing match.\n\nTherefore, the model was evaluated on a later time period rather than a random sample of matches.\n\n---"
+  },
+  {
+    "chunk_id": 91,
+    "source": "ml_methodology.md",
+    "section": "Majority Baseline",
+    "chunk_number": 38,
+    "text": "Majority Baseline\n\n- Accuracy: 0.4821\n- Macro F1: 0.2169\n- Log Loss: 18.6655"
+  },
+  {
+    "chunk_id": 92,
+    "source": "ml_methodology.md",
+    "section": "Logistic Regression",
+    "chunk_number": 39,
+    "text": "Logistic Regression\n\n- Accuracy: 0.3750\n- Macro F1: 0.3607\n- Log Loss: 1.2175"
+  },
+  {
+    "chunk_id": 93,
+    "source": "ml_methodology.md",
+    "section": "Initial Random Forest",
+    "chunk_number": 40,
+    "text": "Initial Random Forest\n\n- Accuracy: 0.4821\n- Macro F1: 0.3854\n- Log Loss: 1.0318\n\nThe Random Forest was therefore better than the majority baseline on Macro F1 and Log Loss, although its accuracy matched the baseline.\n\n---"
+  },
+  {
+    "chunk_id": 94,
+    "source": "ml_methodology.md",
+    "section": "22. ML 5 Feature Redundancy Analysis",
+    "chunk_number": 41,
+    "text": "22. ML 5 Feature Redundancy Analysis\n\nThe full ML5 representation contained 45 features.\n\nSeveral highly redundant relationships were identified.\n\nExamples:\n\n- previous-five home passes and home carries: correlation approximately 0.970\n- previous-five away passes and away carries: correlation approximately 0.967\n- passes difference and carries difference: correlation approximately 0.974\n\nThis motivated testing a compact feature representation.\n\n---"
+  },
+  {
+    "chunk_id": 95,
+    "source": "ml_methodology.md",
+    "section": "23. ML 5 Compact Model",
+    "chunk_number": 42,
+    "text": "23. ML 5 Compact Model\n\nA compact representation containing 12 features was evaluated.\n\nThe 12 features are:\n\n1. form points difference\n2. goals for difference\n3. goals against difference\n4. shots difference\n5. xG difference\n6. passes difference\n7. pressures difference\n8. carries difference\n9. duels difference\n10. interceptions difference\n11. clearances difference\n12. home-away xG difference\n\nThe compact representation removes substantial redundancy while retaining the main pre-match performance differences between the two teams.\n\n---"
+  },
+  {
+    "chunk_id": 96,
+    "source": "ml_methodology.md",
+    "section": "Full Random Forest",
+    "chunk_number": 43,
+    "text": "Full Random Forest\n\n- Features: 45\n- Training accuracy: 0.9241\n- Test accuracy: 0.4821\n- Macro F1: 0.3854\n- Log Loss: 1.0318\n- Multiclass Brier score: 0.6155\n\nThe large gap between training and testing accuracy indicates substantial overfitting in the full feature representation.\n\n---"
+  },
+  {
+    "chunk_id": 97,
+    "source": "ml_methodology.md",
+    "section": "Compact Random Forest",
+    "chunk_number": 44,
+    "text": "Compact Random Forest\n\n- Features: 12\n- Training accuracy: 0.8393\n- Test accuracy: 0.5179\n- Macro F1: 0.4535\n- Log Loss: 1.0641\n- Multiclass Brier score: 0.6363\n\nThe compact model achieved:\n\n`51.79%`\n\nheld-out accuracy and:\n\n`0.4535`\n\nMacro F1.\n\nIt also reduced training accuracy, which is consistent with a less complex representation.\n\nThe compact model was selected as the final ML5 representation because it improved held-out accuracy and Macro F1 while reducing feature redundancy.\n\nThe full model had slightly better Log Loss, so the compact model is not superior on every evaluation metric.\n\n---"
+  },
+  {
+    "chunk_id": 98,
+    "source": "ml_methodology.md",
+    "section": "25. ML 5 Confusion Matrix",
+    "chunk_number": 45,
+    "text": "25. ML 5 Confusion Matrix\n\nThe compact/final Random Forest evaluation used three outcome classes.\n\nThe confusion matrix from the model evaluation was:\n\n| Actual | Predicted Home Win | Predicted Draw | Predicted Away Win |\n|---|---:|---:|---:|\n| Home Win | 21 | 3 | 3 |\n| Draw | 7 | 2 | 9 |\n| Away Win | 5 | 2 | 4 |\n\nClass-level recall showed:\n\n- Home-win recall: approximately 78%\n- Draw recall: approximately 11%\n- Away-win recall: approximately 36%\n\nThe model therefore performs substantially better at identifying home wins than draws.\n\n---"
+  },
+  {
+    "chunk_id": 99,
+    "source": "ml_methodology.md",
+    "section": "26. ML 5 Probability Validation",
+    "chunk_number": 46,
+    "text": "26. ML 5 Probability Validation\n\nThe final model also produces multiclass probabilities.\n\nValidation confirmed:\n\n- valid prediction counts\n- valid probability counts\n- finite probabilities\n- probability values sum to 1\n- all three test classes are represented\n\nThis is important because the application can eventually present outcome probabilities rather than only a single predicted class.\n\n---"
+  },
+  {
+    "chunk_id": 100,
+    "source": "ml_methodology.md",
+    "section": "27. ML 5 Limitations",
+    "chunk_number": 47,
+    "text": "27. ML 5 Limitations\n\nThe match-outcome model has several limitations."
+  },
+  {
+    "chunk_id": 101,
+    "source": "ml_methodology.md",
+    "section": "Dataset size",
+    "chunk_number": 48,
+    "text": "Dataset size\n\nOnly 280 matches are available after requiring sufficient previous-five-match history.\n\nThe final test set contains only 56 matches."
+  },
+  {
+    "chunk_id": 102,
+    "source": "ml_methodology.md",
+    "section": "Single-season limitation",
+    "chunk_number": 49,
+    "text": "Single-season limitation\n\nThe model is trained and tested within the Premier League 2015/16 season."
+  },
+  {
+    "chunk_id": 103,
+    "source": "ml_methodology.md",
+    "section": "Temporal limitation",
+    "chunk_number": 50,
+    "text": "Temporal limitation\n\nThe evaluation uses one chronological holdout period.\n\nPerformance may differ on other seasons or competitions."
+  },
+  {
+    "chunk_id": 104,
+    "source": "ml_methodology.md",
+    "section": "Draw prediction",
+    "chunk_number": 51,
+    "text": "Draw prediction\n\nThe model has relatively weak draw recall."
+  },
+  {
+    "chunk_id": 105,
+    "source": "ml_methodology.md",
+    "section": "Feature limitation",
+    "chunk_number": 52,
+    "text": "Feature limitation\n\nThe current feature set focuses on historical team performance and event-derived statistics.\n\nIt does not currently include factors such as:\n\n- injuries\n- suspensions\n- confirmed lineups\n- transfers\n- bookmaker odds\n- weather\n- travel\n- current squad strength\n- live tactical information"
+  },
+  {
+    "chunk_id": 106,
+    "source": "ml_methodology.md",
+    "section": "No current football data",
+    "chunk_number": 53,
+    "text": "No current football data\n\nThe model is not a live match prediction system.\n\n---"
+  },
+  {
+    "chunk_id": 107,
+    "source": "ml_methodology.md",
+    "section": "28. Machine Learning Validation Principles",
+    "chunk_number": 54,
+    "text": "28. Machine Learning Validation Principles\n\nThe project follows several validation principles:\n\n1. Validate the underlying feature dataset before modeling.\n2. Avoid duplicate player or match records.\n3. Check missing and non-finite values.\n4. Use chronological splits for temporal football prediction tasks.\n5. Prevent target-window overlap.\n6. Compare against simple baselines.\n7. Report multiple evaluation metrics.\n8. Inspect feature redundancy.\n9. Avoid interpreting test R² as accuracy.\n10. Avoid interpreting feature importance as causality.\n11. Document rejected modeling approaches.\n12. Do not claim model performance outside the evaluated dataset.\n\n---"
+  },
+  {
+    "chunk_id": 108,
+    "source": "ml_methodology.md",
+    "section": "29. Current ML Status",
+    "chunk_number": 55,
+    "text": "29. Current ML Status\n\nCompleted machine-learning components:\n\n- ML1: Feature engineering and QC\n- ML2: Role-aware player similarity\n- ML3: Player clustering\n- ML4: Player performance prediction\n- ML5: Match outcome prediction\n\nThe machine-learning layer is currently based on the selected Premier League 2015/16 dataset.\n\nFuture expansion to additional competitions and seasons should first validate the data coverage, feature consistency, and model behavior on those datasets.\n\n---"
+  },
+  {
+    "chunk_id": 109,
+    "source": "ml_methodology.md",
+    "section": "30. Overall ML Principle",
+    "chunk_number": 56,
+    "text": "30. Overall ML Principle\n\nFootball Intelligence AI uses machine learning as a decision-support layer.\n\nThe system should distinguish between:\n\n- observed football data\n- derived analytical metrics\n- engineered features\n- model predictions\n- model interpretations\n\nA machine-learning prediction is not a guaranteed football outcome.\n\nThe final AI architecture should use SQL for exact structured statistics, machine learning for predictive and similarity tasks, RAG for grounded project documentation, and an agent layer for coordinating multi-step workflows."
+  },
+  {
+    "chunk_id": 110,
+    "source": "scouting_methodology.md",
+    "section": "1. Purpose",
+    "chunk_number": 0,
+    "text": "1. Purpose\n\nFootball Intelligence AI uses a role-aware scouting methodology to transform football performance data into player profiles and comparable scouting scores.\n\nThe purpose is to support:\n\n- player discovery\n- player comparison\n- role-specific scouting\n- statistical profiling\n- similarity analysis\n- exploratory recruitment analysis\n\nThe scouting system is an analytical framework created for this project.\n\nIt should not be interpreted as an official club scouting rating or an objective universal ranking of football players.\n\n---"
+  },
+  {
+    "chunk_id": 111,
+    "source": "scouting_methodology.md",
+    "section": "2. Scouting Population",
+    "chunk_number": 1,
+    "text": "2. Scouting Population\n\nThe main scouting population consists of players who accumulated at least:\n\n`900 minutes`\n\nduring the selected Premier League 2015/16 dataset.\n\nThis produces:\n\n`316 players`\n\nThe exposure threshold is used because very small samples can create unstable per-90 statistics.\n\nA player with only a small number of minutes can otherwise appear unusually strong or weak simply because of limited observations.\n\n---"
+  },
+  {
+    "chunk_id": 112,
+    "source": "scouting_methodology.md",
+    "section": "3. Primary Position",
+    "chunk_number": 2,
+    "text": "3. Primary Position\n\nPlayers can appear in multiple positions during a season.\n\nThe project determines a player's primary position using accumulated playing minutes.\n\nThe position with the greatest accumulated playing time is treated as the player's primary position.\n\nThis approach provides a reproducible rule for assigning players to analytical role groups.\n\nIt does not claim that a player can only perform one tactical role.\n\n---"
+  },
+  {
+    "chunk_id": 113,
+    "source": "scouting_methodology.md",
+    "section": "4. Analytical Role Groups",
+    "chunk_number": 3,
+    "text": "4. Analytical Role Groups\n\nThe project maps primary positions into eight analytical role groups:\n\n1. Goalkeeper\n2. Centre Back\n3. Full Back\n4. Defensive Midfielder\n5. Central Midfielder\n6. Attacking Midfielder\n7. Winger\n8. Forward\n\nRole groups are used because comparing every player using exactly the same performance expectations can produce misleading scouting conclusions.\n\nFor example, high shot volume may be desirable for a forward but not necessarily for a centre back.\n\n---"
+  },
+  {
+    "chunk_id": 114,
+    "source": "scouting_methodology.md",
+    "section": "5. Scouting Feature Base",
+    "chunk_number": 4,
+    "text": "5. Scouting Feature Base\n\nThe scouting feature system is built from event-derived football statistics.\n\nThe underlying feature categories include:\n\n- Shooting\n- Chance Creation\n- Passing\n- Defensive\n- Carrying\n- Duels\n- Retention/Recovery\n\nExamples of underlying metrics include:\n\n- shots per 90\n- xG per 90\n- goals per 90\n- key passes per 90\n- event-derived assists per 90\n- passes per 90\n- pass distance per 90\n- pressures per 90\n- tackles per 90\n- interceptions per 90\n- clearances per 90\n- carries per 90\n- dribbles per 90\n- duels per 90\n- aerial duels lost per 90\n- miscontrols per 90\n- dispossessed per 90\n- ball recoveries per 90\n\nNot every underlying metric is used in every role.\n\n---"
+  },
+  {
+    "chunk_id": 115,
+    "source": "scouting_methodology.md",
+    "section": "6. Role-Specific Feature Selection",
+    "chunk_number": 5,
+    "text": "6. Role-Specific Feature Selection\n\nDifferent roles emphasize different aspects of football performance.\n\nThe project therefore selects relevant features according to the player's analytical role.\n\nFor example:"
+  },
+  {
+    "chunk_id": 116,
+    "source": "scouting_methodology.md",
+    "section": "Goalkeeper",
+    "chunk_number": 6,
+    "text": "Goalkeeper\n\nEmphasis is placed on:\n\n- passing\n- retention/recovery\n- defensive activity"
+  },
+  {
+    "chunk_id": 117,
+    "source": "scouting_methodology.md",
+    "section": "Centre Back",
+    "chunk_number": 7,
+    "text": "Centre Back\n\nEmphasis is placed on:\n\n- defensive activity\n- passing\n- duels\n- carrying\n- retention/recovery"
+  },
+  {
+    "chunk_id": 118,
+    "source": "scouting_methodology.md",
+    "section": "Full Back",
+    "chunk_number": 8,
+    "text": "Full Back\n\nEmphasis is placed on:\n\n- defensive activity\n- passing\n- carrying\n- chance creation\n- retention/recovery"
+  },
+  {
+    "chunk_id": 119,
+    "source": "scouting_methodology.md",
+    "section": "Defensive Midfielder",
+    "chunk_number": 9,
+    "text": "Defensive Midfielder\n\nEmphasis is placed on:\n\n- defensive activity\n- passing\n- retention/recovery\n- carrying\n- chance creation"
+  },
+  {
+    "chunk_id": 120,
+    "source": "scouting_methodology.md",
+    "section": "Central Midfielder",
+    "chunk_number": 10,
+    "text": "Central Midfielder\n\nEmphasis is placed on:\n\n- passing\n- defensive activity\n- chance creation\n- carrying\n- retention/recovery"
+  },
+  {
+    "chunk_id": 121,
+    "source": "scouting_methodology.md",
+    "section": "Attacking Midfielder",
+    "chunk_number": 11,
+    "text": "Attacking Midfielder\n\nEmphasis is placed on:\n\n- chance creation\n- shooting\n- passing\n- carrying\n- retention/recovery"
+  },
+  {
+    "chunk_id": 122,
+    "source": "scouting_methodology.md",
+    "section": "Winger",
+    "chunk_number": 12,
+    "text": "Winger\n\nEmphasis is placed on:\n\n- chance creation\n- shooting\n- carrying\n- passing\n- retention/recovery"
+  },
+  {
+    "chunk_id": 123,
+    "source": "scouting_methodology.md",
+    "section": "Forward",
+    "chunk_number": 13,
+    "text": "Forward\n\nEmphasis is placed on:\n\n- shooting\n- chance creation\n- duels\n- carrying\n- retention/recovery\n\nThese weights are project-defined assumptions rather than weights learned from historical recruitment outcomes.\n\n---"
+  },
+  {
+    "chunk_id": 124,
+    "source": "scouting_methodology.md",
+    "section": "7. Percentile Transformation",
+    "chunk_number": 14,
+    "text": "7. Percentile Transformation\n\nRaw performance metrics can have very different scales.\n\nFor example:\n\n- passes can occur hundreds of times\n- shots occur much less frequently\n- interceptions occur at another frequency\n\nThe project converts selected metrics into percentile scores within each analytical role.\n\nThis creates a common approximate 0–100 scale.\n\nA higher percentile means the player's value is relatively high compared with other players in the same role.\n\nFor example:\n\n- 90 = approximately 90th percentile\n- 50 = approximately median\n- 10 = approximately 10th percentile\n\nThese values are relative rather than absolute.\n\n---"
+  },
+  {
+    "chunk_id": 125,
+    "source": "scouting_methodology.md",
+    "section": "8. Direction of Metrics",
+    "chunk_number": 15,
+    "text": "8. Direction of Metrics\n\nNot every metric has a \"higher is better\" interpretation.\n\nFor example, high values for:\n\n- miscontrols\n- dispossessed\n- aerial duels lost\n\ncan represent undesirable outcomes depending on the analytical context.\n\nThe scouting percentile methodology therefore reverses selected lower-is-better metrics.\n\nCurrent reversed metrics include:\n\n- aerial duels lost\n- miscontrols\n- dispossessed\n\nThis means a player with fewer such events can receive a higher percentile score for that component.\n\n---"
+  },
+  {
+    "chunk_id": 126,
+    "source": "scouting_methodology.md",
+    "section": "9. Scouting Category Profiles",
+    "chunk_number": 16,
+    "text": "9. Scouting Category Profiles\n\nThe percentile features are grouped into seven scouting categories:\n\n1. Shooting\n2. Chance Creation\n3. Passing\n4. Defensive\n5. Carrying\n6. Duels\n7. Retention/Recovery\n\nEach category represents a different aspect of player performance.\n\nThe category profiles allow the system to describe a player's strengths and weaknesses rather than relying only on one overall number.\n\n---"
+  },
+  {
+    "chunk_id": 127,
+    "source": "scouting_methodology.md",
+    "section": "10. Role-Aware Scouting Score",
+    "chunk_number": 17,
+    "text": "10. Role-Aware Scouting Score\n\nThe project combines the category profiles into a role-aware scouting score.\n\nThe score uses transparent, manually defined weights.\n\nThe weights differ by role."
+  },
+  {
+    "chunk_id": 128,
+    "source": "scouting_methodology.md",
+    "section": "Goalkeeper",
+    "chunk_number": 18,
+    "text": "Goalkeeper\n\n- Passing: 50%\n- Retention/Recovery: 30%\n- Defensive: 20%"
+  },
+  {
+    "chunk_id": 129,
+    "source": "scouting_methodology.md",
+    "section": "Centre Back",
+    "chunk_number": 19,
+    "text": "Centre Back\n\n- Defensive: 40%\n- Passing: 25%\n- Duels: 20%\n- Carrying: 10%\n- Retention/Recovery: 5%"
+  },
+  {
+    "chunk_id": 130,
+    "source": "scouting_methodology.md",
+    "section": "Full Back",
+    "chunk_number": 20,
+    "text": "Full Back\n\n- Defensive: 30%\n- Passing: 25%\n- Carrying: 25%\n- Chance Creation: 10%\n- Retention/Recovery: 10%"
+  },
+  {
+    "chunk_id": 131,
+    "source": "scouting_methodology.md",
+    "section": "Defensive Midfielder",
+    "chunk_number": 21,
+    "text": "Defensive Midfielder\n\n- Defensive: 30%\n- Passing: 30%\n- Retention/Recovery: 20%\n- Carrying: 15%\n- Chance Creation: 5%"
+  },
+  {
+    "chunk_id": 132,
+    "source": "scouting_methodology.md",
+    "section": "Central Midfielder",
+    "chunk_number": 22,
+    "text": "Central Midfielder\n\n- Passing: 30%\n- Defensive: 20%\n- Chance Creation: 20%\n- Carrying: 20%\n- Retention/Recovery: 10%"
+  },
+  {
+    "chunk_id": 133,
+    "source": "scouting_methodology.md",
+    "section": "Attacking Midfielder",
+    "chunk_number": 23,
+    "text": "Attacking Midfielder\n\n- Chance Creation: 35%\n- Shooting: 25%\n- Passing: 20%\n- Carrying: 15%\n- Retention/Recovery: 5%"
+  },
+  {
+    "chunk_id": 134,
+    "source": "scouting_methodology.md",
+    "section": "Winger",
+    "chunk_number": 24,
+    "text": "Winger\n\n- Chance Creation: 30%\n- Shooting: 30%\n- Carrying: 25%\n- Passing: 10%\n- Retention/Recovery: 5%"
+  },
+  {
+    "chunk_id": 135,
+    "source": "scouting_methodology.md",
+    "section": "Forward",
+    "chunk_number": 25,
+    "text": "Forward\n\n- Shooting: 40%\n- Chance Creation: 20%\n- Duels: 15%\n- Carrying: 10%\n- Retention/Recovery: 15%\n\nThe weights sum to 100% within each role.\n\n---"
+  },
+  {
+    "chunk_id": 136,
+    "source": "scouting_methodology.md",
+    "section": "11. Interpretation of the Scouting Score",
+    "chunk_number": 26,
+    "text": "11. Interpretation of the Scouting Score\n\nThe scouting score is a project-defined composite score.\n\nIt represents how strongly a player's statistical profile matches the project's role-specific performance framework.\n\nIt does not represent:\n\n- transfer value\n- market value\n- salary value\n- future potential\n- injury risk\n- tactical compatibility with a specific club\n- guaranteed future performance\n- an official player rating\n\nA high score means the player performs strongly according to the selected statistical dimensions and role-specific weights.\n\n---"
+  },
+  {
+    "chunk_id": 137,
+    "source": "scouting_methodology.md",
+    "section": "12. Position Share",
+    "chunk_number": 27,
+    "text": "12. Position Share\n\nThe project also calculates position share.\n\nPosition share represents the percentage of a player's recorded minutes associated with the player's primary position.\n\nIt is kept separate from the scouting score.\n\nThis is important because a player can have a high statistical score while having relatively limited exposure in the position used for the comparison.\n\nPosition share therefore acts as an additional confidence or versatility indicator rather than directly increasing player quality.\n\n---"
+  },
+  {
+    "chunk_id": 138,
+    "source": "scouting_methodology.md",
+    "section": "13. Player Profiles",
+    "chunk_number": 28,
+    "text": "13. Player Profiles\n\nThe scouting system can represent each player using a profile across the seven categories.\n\nA player can therefore be described using a vector such as:\n\n- Shooting\n- Chance Creation\n- Passing\n- Defensive\n- Carrying\n- Duels\n- Retention/Recovery\n\nThis provides more information than an overall score alone.\n\nFor example, two players could have similar overall scores while having very different strengths.\n\nOne may be stronger in passing and defensive activity, while another may be stronger in shooting and chance creation.\n\n---"
+  },
+  {
+    "chunk_id": 139,
+    "source": "scouting_methodology.md",
+    "section": "14. Player Ranking",
+    "chunk_number": 29,
+    "text": "14. Player Ranking\n\nPlayers can be ranked within their analytical role using the role-aware scouting score.\n\nThe ranking should be interpreted as:\n\n\"Players whose statistical profiles score highly under this project's role-specific framework.\"\n\nIt should not be interpreted as:\n\n\"These are objectively the best football players.\"\n\nThe ranking is dependent on:\n\n- the selected dataset\n- the 900-minute exposure threshold\n- the selected metrics\n- the role definitions\n- the percentile methodology\n- the manually selected weights\n\nChanging any of these assumptions can change the ranking.\n\n---"
+  },
+  {
+    "chunk_id": 140,
+    "source": "scouting_methodology.md",
+    "section": "15. Player Similarity",
+    "chunk_number": 30,
+    "text": "15. Player Similarity\n\nThe scouting features also support a separate player-similarity system.\n\nThe similarity model uses a validated 15-feature representation based on per-90 football event metrics.\n\nThe final similarity feature set includes:\n\n1. shots per 90\n2. xG per 90\n3. key passes per 90\n4. passes per 90\n5. pass distance per 90\n6. pressures per 90\n7. tackles per 90\n8. interceptions per 90\n9. clearances per 90\n10. carries per 90\n11. dribbles per 90\n12. duels per 90\n13. miscontrols per 90\n14. dispossessed per 90\n15. ball recoveries per 90\n\nBefore calculating similarity, the features are standardized.\n\nCosine similarity is then used to compare player profiles.\n\n---"
+  },
+  {
+    "chunk_id": 141,
+    "source": "scouting_methodology.md",
+    "section": "16. Role-Aware Player Similarity",
+    "chunk_number": 31,
+    "text": "16. Role-Aware Player Similarity\n\nThe similarity system uses the player's analytical role as a comparison constraint.\n\nA player is compared with other players from the same role group.\n\nThe role is not inserted as a numerical machine-learning feature.\n\nInstead, it is used to restrict the candidate comparison population.\n\nThis reduces obviously inappropriate comparisons between players whose statistical profiles may be similar in some dimensions but who perform fundamentally different roles.\n\nSimilarity should therefore be interpreted as:\n\n\"How similar are these players statistically under the selected feature representation?\"\n\nIt does not mean:\n\n- identical tactical role\n- identical playing style\n- identical quality\n- identical potential\n- guaranteed interchangeability\n\n---"
+  },
+  {
+    "chunk_id": 142,
+    "source": "scouting_methodology.md",
+    "section": "17. Player Clustering",
+    "chunk_number": 32,
+    "text": "17. Player Clustering\n\nThe project also uses unsupervised machine learning to identify statistical player archetypes.\n\nK-Means clustering is applied to the standardized 15-feature player representation.\n\nThe number of clusters was evaluated using silhouette scores for:\n\n`K = 2 through 10`\n\nThe project selected:\n\n`K = 5`\n\nK=2 had the highest numerical silhouette score, but K=5 produced an almost identical score while providing substantially more interpretable football archetypes.\n\nThe resulting five clusters were interpreted as:\n\n1. Goalkeeper\n2. Two-Way / High-Volume\n3. Finishing Forward\n4. Creative Attacker\n5. Defensive Player\n\nThese names are human interpretations of the statistical clusters.\n\nThey are not labels learned directly by K-Means.\n\nSome clusters have lower silhouette scores, indicating overlap between certain player profiles.\n\nTherefore, cluster membership should not be treated as a rigid football position or definitive player type.\n\n---"
+  },
+  {
+    "chunk_id": 143,
+    "source": "scouting_methodology.md",
+    "section": "18. Scouting Methodology Limitations",
+    "chunk_number": 33,
+    "text": "18. Scouting Methodology Limitations\n\nThe scouting framework has several important limitations."
+  },
+  {
+    "chunk_id": 144,
+    "source": "scouting_methodology.md",
+    "section": "Dataset limitation",
+    "chunk_number": 34,
+    "text": "Dataset limitation\n\nThe current scouting population comes from one competition-season:\n\nPremier League 2015/16."
+  },
+  {
+    "chunk_id": 145,
+    "source": "scouting_methodology.md",
+    "section": "Feature limitation",
+    "chunk_number": 35,
+    "text": "Feature limitation\n\nThe model uses the event fields available in the selected StatsBomb Open Data.\n\nIt does not currently include:\n\n- transfer values\n- salaries\n- player wages\n- contract information\n- injury history\n- physical testing data\n- scouting reports\n- tactical instructions\n- live/current performance"
+  },
+  {
+    "chunk_id": 146,
+    "source": "scouting_methodology.md",
+    "section": "Weight limitation",
+    "chunk_number": 36,
+    "text": "Weight limitation\n\nThe scouting score weights are manually defined.\n\nThey are not learned from:\n\n- transfer outcomes\n- club recruitment decisions\n- future player performance\n- expert scout labels"
+  },
+  {
+    "chunk_id": 147,
+    "source": "scouting_methodology.md",
+    "section": "Tactical limitation",
+    "chunk_number": 37,
+    "text": "Tactical limitation\n\nEvent statistics cannot fully capture tactical context.\n\nA player's role, team system, possession share, teammates, opposition, game state, and tactical instructions can affect event volume and behavior."
+  },
+  {
+    "chunk_id": 148,
+    "source": "scouting_methodology.md",
+    "section": "Sample limitation",
+    "chunk_number": 38,
+    "text": "Sample limitation\n\nEven with a 900-minute threshold, one season is still a limited sample.\n\n---"
+  },
+  {
+    "chunk_id": 149,
+    "source": "scouting_methodology.md",
+    "section": "19. Recommended Interpretation",
+    "chunk_number": 39,
+    "text": "19. Recommended Interpretation\n\nThe scouting framework should be used as a decision-support tool.\n\nA sensible scouting workflow is:\n\n1. Identify players using statistical filters.\n2. Compare players within relevant roles.\n3. Inspect category profiles.\n4. Examine player similarity.\n5. Examine cluster/archetype membership.\n6. Consider playing-time exposure and position share.\n7. Combine statistical evidence with football context.\n8. Use the output to support, not replace, scouting judgment.\n\n---"
+  },
+  {
+    "chunk_id": 150,
+    "source": "scouting_methodology.md",
+    "section": "20. Core Principle",
+    "chunk_number": 40,
+    "text": "20. Core Principle\n\nFootball Intelligence AI does not treat one number as the truth about a football player.\n\nThe purpose of the scouting system is to combine:\n\n- role-aware statistical analysis\n- transparent feature definitions\n- player similarity\n- unsupervised archetyping\n- machine-learning outputs\n- contextual interpretation\n\ninto a reproducible analytical framework.\n\nThe system should clearly distinguish between measured data, project-derived metrics, modeling assumptions, and interpretation."
+  }
+]
